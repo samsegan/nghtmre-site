@@ -589,6 +589,16 @@ ul, ol { list-style: none; }
   .dock-text { max-width: 26vw; }
 }
 
+/* outbound links: a drawn arrow, never the ↗ character (iPhones draw that as Apple's arrow emoji); none on phones */
+.ext { display: inline-block; flex: none; width: .62em; height: .62em; vertical-align: .02em; background: currentColor;
+  -webkit-mask: var(--ext-arrow) center / contain no-repeat; mask: var(--ext-arrow) center / contain no-repeat;
+  --ext-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.6 8.4 8.2 1.8M3 1.8h5.2V7' fill='none' stroke='%23000' stroke-width='1.7'/%3E%3C/svg%3E"); }
+.sleeve-lt { display: none; }
+@media (max-width: 820px), (hover: none) and (pointer: coarse) {
+  .ext { display: none; }
+  .sleeve-lt { display: inline; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01s !important; }

@@ -42,7 +42,7 @@
       .sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; });
     var box = $('#shows');
     if (!shows.length) {
-      box.innerHTML = '<li class="shows-wait"><a href="https://laylo.com/nghtmre" target="_blank" rel="noopener">No dates on sale right now. Get told when the next ones land &nearr;</a></li>';
+      box.innerHTML = '<li class="shows-wait"><a href="https://laylo.com/nghtmre" target="_blank" rel="noopener">No dates on sale right now. Get told when the next ones land <span class="ext" aria-hidden="true"></span></a></li>';
       $('#tour-count').textContent = '[ Dates soon ]';
       return;
     }
@@ -62,7 +62,7 @@
         '<span class="show-date"><b>' + range(a, b) + '</b><i>' + sub + '</i></span>' +
         '<span class="show-city">' + esc(city) + (region ? '<small>' + esc(region) + '</small>' : '') + '</span>' +
         '<span class="show-venue">' + esc(e.venue) + (e.note ? '<em>' + esc(e.note) + '</em>' : '') + '</span>' +
-        '<span class="show-cta">' + (e.soldOut ? 'Sold out' : 'Tickets') + ' <span aria-hidden="true">&nearr;</span></span>' +
+        '<span class="show-cta">' + (e.soldOut ? 'Sold out' : 'Tickets') + ' <span class="ext" aria-hidden="true"></span></span>' +
         '</a></li>';
     });
     box.innerHTML = html;
@@ -284,7 +284,7 @@
         '<img src="' + esc(c.art) + '" alt="" width="520" height="520" loading="lazy" decoding="async">' +
         '<span class="sleeve-tag" aria-hidden="true">Preview</span></button>' +
         '<div class="sleeve-cap"><span class="sleeve-t">' + esc(c.title) + '</span>' +
-        '<a class="sleeve-l" href="' + esc(c.link) + '" target="_blank" rel="noopener" aria-label="Listen to ' + esc(c.title) + ' in full">&nearr;</a>' +
+        '<a class="sleeve-l" href="' + esc(c.link) + '" target="_blank" rel="noopener" aria-label="Listen to ' + esc(c.title) + ' in full"><span class="sleeve-lt">Listen</span><span class="ext" aria-hidden="true"></span></a>' +
         '<span class="sleeve-a">' + esc(meta) + '</span></div></li>';
     }).join('');
     $('#cat').addEventListener('click', function (e) {
@@ -672,7 +672,7 @@
   $('#merch').innerHTML = D.merch.map(function (m, i) {
     return '<li data-h="' + esc(m.handle) + '"><a href="' + STORE + '/products/' + esc(m.handle) + '" target="_blank" rel="noopener">' +
       '<div class="torn sq"><div class="merch-card"><img src="img/m-' + i + '.webp" alt="" width="640" height="640" loading="lazy" decoding="async"></div></div>' +
-      '<p class="merch-t"><span>' + esc(m.title) + '</span><span class="merch-p" aria-hidden="true">&nearr;</span></p></a>' +
+      '<p class="merch-t"><span>' + esc(m.title) + '</span><span class="merch-p" aria-hidden="true"><span class="ext"></span></span></p></a>' +
       '<div class="merch-buy" hidden></div></li>';
   }).join('');
 
