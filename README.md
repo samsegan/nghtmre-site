@@ -24,28 +24,33 @@ to `main`). The page asks search engines not to list it.
 
 ## What is on the page
 
-1. **Landing**, kept minimal so it points at tickets: the Mindfull portrait
-   and the paint, with his logo and "Mindfull Tour" in the middle over the
-   seam, then a big Get tickets (its heat-map ring runs round it and it
-   breathes) and Tour alerts. Tap the logo or the tour name and the landing
-   dreams for three seconds: it warps like water, a hypnotic spiral turns over
-   it, echoes of the logo float off in the heat-map colours and the photo
-   drifts through them. Once you are past the dates a small Get tickets stays
-   under TOUR in the top-left corner, and every date's Tickets button is solid.
+1. **Landing**, kept minimal so it points at tickets. His logo is the
+   masthead, top centre; under it, in the middle, "Mindfull Tour" and the
+   ticket. Logo and title are printed across the tear in two inks: yellow on
+   the photo, black on the paint. **Get tickets is a ticket**: his orb is its
+   hologram, a light runs slowly round its edge, and like the lockup on
+   nghtmre.com it floats. Tour alerts sits under it.
+   **Press the logo or "Mindfull Tour" to dream**: the eyes close, and when
+   they open the portrait is what a thermal camera sees, its five slices
+   sliding apart; the paint runs through the heat-map colours; the letters
+   float off with red and blue ghosts. A few seconds on the eyes close again
+   and you wake (or press again to wake sooner).
+   Once you are past the dates a small ticket stays under TOUR, top left.
 2. **Tour**: every upcoming date, read live from Seated (the same feed
    nghtmre.com uses) so it stays right by itself; a copy saved at build time
    shows first and stays if Seated cannot be reached. Past dates drop off. Then
    the stage, fog and crowd from nghtmre.com.
-3. **Music**: first every record (57, back to 2015) on **the dream wheel**:
-   the covers ride a half circle round his crystal-ball mark like the platter
-   of a CDJ, endless both ways. Drag or swipe sideways (with momentum), use a
-   trackpad, the arrows, the arrow keys or the years under it. The front record
-   is sharp and lit and the rest blur and sink into fog; a hypnotic spiral turns
-   with the wheel and spins while a preview plays; the rim carries the years in
-   the heat-map colours of the Mindfull artwork. Tap the front cover (or
-   Preview) for Apple's 30-second preview; when it ends the wheel turns on to
-   the next record. Then MINDFULL (Deluxe) with all 17 tracks. `?records=grid`
-   shows the old grid of sleeves instead of the wheel.
+3. **Music**: first every record (57, back to 2015) **turning round his
+   orb**. NGHTMRE's mark is a crystal ball, so the records fan round one that
+   rises out of the fog, and turn like the platter of a CDJ, endless both
+   ways: drag or swipe sideways and it keeps spinning and comes to rest on a
+   record (also a trackpad, the arrows, the arrow keys, the years under it).
+   The ball shows the record at the front: its name inside the glass, and the
+   glow and mist in the colours of its cover. Tap the front cover (or Preview)
+   for Apple's 30-second preview: the ball beats with the track's own low end,
+   the rim fills as it plays, and at the end the wheel turns on to the next
+   record. Then MINDFULL (Deluxe) with all 17 tracks. `?records=grid` shows a
+   plain grid of sleeves instead of the wheel.
 4. **Video**: 17 films, then 26 clips from the shows (his YouTube Shorts), all
    played in the page. YouTube does the hosting.
 5. **Shop**: eight items from nghtmreshop.com, NGHTMRE's Shopify store, with
@@ -70,6 +75,9 @@ Plain HTML, CSS and JavaScript. No framework, no build step for the page.
 | `data/catalog.json`, `data/album.json` | The records and the album's tracks (generated) |
 | `data/videos.json` | The films: YouTube id, title, who with |
 | `data/clips.json` | The clips (Shorts): YouTube id, title |
+| `data/slices.json`, `data/colors.json`, `img/hero-dream.webp` | Made by `tools/dream.py`: where the portrait's five slices are cut, two glow colours per cover, the thermal portrait |
+| `data/env.json` | Made by `tools/env.py`: how loud each preview's low end is, 20 times a second (the orb's beat) |
+| `opus.html` (+ `css/styles-opus.css`, `js/app-opus.js`, `js/data-opus.js`) | The earlier take of this round, kept to compare: add `/opus.html` to the address. Delete these four files when it is no longer wanted |
 | `data/merch.json` | The eight shop items |
 | `data/tour.json` | The saved copy of the tour dates |
 | `art/`, `img/` | Cover art, photos, video stills, merch |
@@ -77,6 +85,8 @@ Plain HTML, CSS and JavaScript. No framework, no build step for the page.
 | `fonts/` | Archivo (the fallback) and DM Mono for the small labels (both SIL Open Font License). His own fonts load from nghtmre.com, where they are licensed; they are not copied here |
 | `tools/catalog.py` | Rebuilds the records and their art from Apple's catalogue |
 | `tools/build.py` | Rebuilds `js/data.js`; with flags, the textures and pictures |
+| `tools/dream.py` | Cuts the portrait's slices, makes the thermal portrait, picks each cover's colours (needs Pillow and numpy) |
+| `tools/env.py` | Measures each preview's loudness for the orb's beat (needs ffmpeg) |
 
 ## Changing things
 
@@ -84,6 +94,8 @@ Plain HTML, CSS and JavaScript. No framework, no build step for the page.
 `tools/catalog.py` (and its smart link in `LINKS` if there is one), then
 
     python3 tools/catalog.py
+    uv run --with pillow --with numpy tools/dream.py   # its glow colours
+    python3 tools/env.py                               # its beat
     python3 tools/build.py
 
 **Tour dates:** nothing to do; the page reads Seated. To refresh the saved copy:

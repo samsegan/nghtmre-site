@@ -93,42 +93,75 @@
       .catch(function () { /* the list built into the page stays */ });
   }
 
-  /* ------------------------------------------------------------ the dream (tap the logo) */
+  /* ------------------------------------------------------------ the landing, and its dream */
 
-  (function dreamTap() {
-    var btn = $('#hero-dream'), heroEl = $('.hero'), echo = $('#hero-echo'), sw = $('#hero-swirl');
-    var map = $('#dw-map'), noise = $('#dw-noise');
+  (function landing() {
+    var hero = $('.hero'), cut = $('.cut');
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var COLS = ['#fcc000', '#ff1f4b', '#c02cff', '#22e4ff'], T = 3200, busy = false;
-    sw.innerHTML = spiral(6);
-    btn.addEventListener('click', function () {
-      if (busy) return;
-      busy = true;
-      // the echoes start exactly over the logo and the tour
-      var h = heroEl.getBoundingClientRect(), r = btn.getBoundingClientRect();
-      echo.style.cssText = 'left:' + (r.left - h.left) + 'px;top:' + (r.top - h.top) + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
-      heroEl.style.setProperty('--dy', (r.top - h.top + r.height / 2) + 'px');
-      echo.innerHTML = COLS.map(function (c, i) {
-        return '<div class="echo" style="--c:' + c + ';--es:' + (1.35 + i * 0.22) + ';--ey:' + (-3 - i * 4) + '%;animation-delay:' + (i * 0.17) + 's">' +
-          '<span class="echo-logo"></span><span class="echo-tour">Mindfull Tour</span></div>';
-      }).join('');
-      heroEl.classList.add('dreaming');
-      var t0 = performance.now(), A = window.innerWidth <= 820 ? 20 : 34;
-      if (!still) heroEl.style.filter = 'url(#dreamwarp)';
-      requestAnimationFrame(function frame(now) {
-        var p = Math.min(1, (now - t0) / T), env = Math.sin(Math.PI * p);
-        if (!still) {
-          map.setAttribute('scale', (A * env).toFixed(1));
-          noise.setAttribute('baseFrequency', (0.004 + 0.002 * Math.sin(p * 8)).toFixed(4) + ' ' + (0.016 + 0.008 * Math.cos(p * 6)).toFixed(4));
-        }
-        if (p < 1) { requestAnimationFrame(frame); return; }
-        heroEl.style.filter = '';
-        map.setAttribute('scale', '0');
-        heroEl.classList.remove('dreaming');
-        echo.innerHTML = '';
-        busy = false;
-      });
+    // the seven letters of the logo: where each starts and ends, of logo.png's 1000
+    var LETTERS = [[20, 157], [156, 287], [299, 423], [431, 546], [545, 745], [758, 884], [891, 979]];
+    var seed = 11;
+    var rnd = function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646 * 2 - 1; };   // -1..1, the same every time
+    var drift = LETTERS.map(function () { return [rnd() * 16, rnd() * 34, rnd() * 9, Math.abs(rnd()) * 0.14]; });
+    var words = 'Mindfull Tour'.split(' ');
+    var tdrift = words.join('').split('').map(function () { return [rnd() * 0.22, rnd() * 0.6, rnd() * 13, Math.abs(rnd()) * 0.14]; });
+
+    // every copy of the lockup gets the same letters, so they move as one
+    $$('.lk-logo').forEach(function (el) {
+      el.innerHTML = '<b></b><span class="lt">' + LETTERS.map(function (r, i) {
+        var f = (r[1] - r[0]) / 1000, size = (100 / f).toFixed(3) + '% 100%', at = (r[0] / 1000 / (1 - f) * 100).toFixed(3) + '% 0', d = drift[i];
+        return '<i style="left:' + (r[0] / 10) + '%;width:' + (f * 100).toFixed(2) + '%;-webkit-mask-size:' + size + ';mask-size:' + size +
+          ';-webkit-mask-position:' + at + ';mask-position:' + at + ';--dx:' + d[0].toFixed(1) + '%;--dy:' + d[1].toFixed(1) + '%;--dr:' + d[2].toFixed(1) + 'deg;--dl:' + d[3].toFixed(2) + 's"></i>';
+      }).join('') + '</span>';
     });
+    $$('.lk-title').forEach(function (el) {
+      var n = 0;
+      el.innerHTML = words.map(function (w) {
+        return w.split('').map(function (ch) {
+          var d = tdrift[n++];
+          return '<span style="--dx:' + d[0].toFixed(2) + 'em;--dy:' + d[1].toFixed(2) + 'em;--dr:' + d[2].toFixed(1) + 'deg;--dl:' + d[3].toFixed(2) + 's">' + ch + '</span>';
+        }).join('');
+      }).join(' ');
+    });
+
+    // the portrait's five slices, as the thermal camera sees them (made once, the first time they are needed)
+    var bands = null;
+    function makeBands() {
+      if (bands || !D.slices) return;
+      bands = document.createElement('div');
+      bands.className = 'cut-bands';
+      bands.innerHTML = D.slices.map(function (poly) {
+        var pts = poly.map(function (p) { return p[0] + '% ' + p[1] + '%'; }).join(',');
+        return '<div class="band" style="-webkit-clip-path:polygon(' + pts + ');clip-path:polygon(' + pts + ')"><img src="img/hero-dream.webp" alt="" width="1200" height="1200" decoding="async"></div>';
+      }).join('');
+      cut.appendChild(bands);
+    }
+    window.addEventListener('load', function () { setTimeout(makeBands, 900); });
+
+    var busy = false, dreaming = false, wake = 0, LEN = 4400;
+    function blink(then) {
+      busy = true;
+      hero.classList.add('blink');
+      setTimeout(function () {
+        then();
+        hero.classList.remove('blink');
+        setTimeout(function () { busy = false; }, 380);
+      }, still ? 0 : 210);
+    }
+    function dream(on) {
+      dreaming = on;
+      hero.classList.toggle('dreaming', on);
+      $$('.dream-hit').forEach(function (b) { b.setAttribute('aria-pressed', String(on)); });
+    }
+    function toggle() {
+      if (busy) return;
+      clearTimeout(wake);
+      if (dreaming) { blink(function () { dream(false); }); return; }
+      makeBands();
+      blink(function () { dream(true); });
+      wake = setTimeout(function () { if (dreaming && !busy) blink(function () { dream(false); }); }, LEN);
+    }
+    $$('.dream-hit').forEach(function (b) { b.addEventListener('click', toggle); });
   })();
 
   /* ------------------------------------------------------------ player */
@@ -239,7 +272,7 @@
 
   (function catalog() {
     if (!GRID) return;
-    $('#dream').hidden = true;
+    $('#orbit').hidden = true;
     $('#grid-view').hidden = false;
     var FIRST = 12;
     $('#music-count').textContent = '[ ' + D.catalog.length + ' records ]';
@@ -268,36 +301,32 @@
     });
   })();
 
-  /* ------------------------------------------------------------ the dream wheel */
+  /* ------------------------------------------------------------ the orb (every record) */
 
-  (function dream() {
+  (function orbit() {
     if (GRID || !D.catalog.length) return;
-    var root = $('#dream'), stage = $('#dream-stage'), wheel = $('#dream-wheel'), rim = $('#dream-rim');
-    var swirl = $('#dream-swirl'), arm = $('#dream-arm'), N = D.catalog.length;
+    var root = $('#orbit'), stage = $('#orbit-stage'), fan = $('#fan');
+    var halo = $('.orb-halo', stage), ticksEl = $('.orb-ticks', stage), prog = $('#orb-prog');
+    var N = D.catalog.length, COL = D.colors || {}, ENV = D.env || {};
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var year = function (c) { return c.date.slice(0, 4); };
 
     $('#music-count').textContent = '[ ' + N + ' records ]';
 
-    wheel.innerHTML = D.catalog.map(function (c, i) {
-      return '<li class="dr" data-key="' + catItems[i].key + '"><button class="dr-b" type="button" tabindex="-1" data-i="' + i + '" aria-label="' + esc(c.title) + ', ' + year(c) + '">' +
-        '<img alt="" width="520" height="520" decoding="async" draggable="false"></button></li>';
+    fan.innerHTML = D.catalog.map(function (c, i) {
+      return '<li class="rec" data-key="' + catItems[i].key + '"><button class="rec-b" type="button" tabindex="-1" data-i="' + i + '" aria-label="' + esc(c.title) + ', ' + year(c) + '">' +
+        '<img alt="" width="520" height="520" decoding="async" draggable="false"><span class="rec-shade"></span></button></li>';
     }).join('');
-    var els = $$('.dr', wheel), imgs = els.map(function (li) { return $('img', li); }), shown = els.map(function () { return false; });
+    var els = $$('.rec', fan), shown = els.map(function () { return false; });
+    var imgs = els.map(function (li) { return $('img', li); }), shades = els.map(function (li) { return $('.rec-shade', li); });
 
-    // the years: on the rim where each one starts, and as buttons under the wheel
+    // the years: a button for each, turning to its newest record
     var firstOf = {}, years = [];
     D.catalog.forEach(function (c, i) { if (!(year(c) in firstOf)) { firstOf[year(c)] = i; years.push(year(c)); } });
-    rim.innerHTML = '<span class="rim-ring"></span>' + D.catalog.map(function (c, i) {
-      var first = firstOf[year(c)] === i;
-      return '<span class="rim-t' + (first ? ' y' : '') + '" style="--i:' + i + '">' + (first ? '<b>' + year(c) + '</b>' : '') + '</span>';
-    }).join('');
-    $('#dream-years').innerHTML = years.map(function (y) {
+    $('#orbit-years').innerHTML = years.map(function (y) {
       return '<li><button type="button" data-i="' + firstOf[y] + '">' + y + '</button></li>';
     }).join('');
-    var yearBtns = $$('#dream-years button');
-
-    arm.innerHTML = spiral(4.5);
+    var yearBtns = $$('#orbit-years button');
 
     // stars: two layers that twinkle out of step (seeded, so they stay put)
     (function () {
@@ -305,86 +334,64 @@
       var rnd = function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
       ['--stars-a', '--stars-b'].forEach(function (v) {
         var g = [];
-        for (var n = 0; n < 34; n++) {
+        for (var n = 0; n < 30; n++) {
           var r = (0.6 + rnd() * 1.1).toFixed(1), a = (0.35 + rnd() * 0.65).toFixed(2);
-          g.push('radial-gradient(' + r + 'px ' + r + 'px at ' + (rnd() * 100).toFixed(1) + '% ' + (rnd() * 62).toFixed(1) + '%, rgba(255,246,220,' + a + ') 99%, transparent 100%)');
+          g.push('radial-gradient(' + r + 'px ' + r + 'px at ' + (rnd() * 100).toFixed(1) + '% ' + (rnd() * 70).toFixed(1) + '%, rgba(255,246,220,' + a + ') 99%, transparent 100%)');
         }
         stage.style.setProperty(v, g.join(','));
       });
     })();
 
-    /* the shape: covers S wide on a circle of radius R round a hub near the
-       bottom; the front cover's top sits TOP below the stage's top */
-    var S, R, TOP, HUB, STEP, ARC;
+    /* the shape: a ball of radius RB with its centre HUB down the stage; the
+       covers, S wide, ride a circle of radius R just outside the glass */
+    var S, RB, R, HUB, STEP, ARC, MAXA;
     function layout() {
-      var W = stage.clientWidth, narrow = window.matchMedia('(max-width: 820px)').matches;
-      if (narrow) {
-        S = Math.round(Math.min(W * 0.5, 250));
-        R = Math.round(W * 0.95);
-        TOP = 58;
-        HUB = TOP + S / 2 + R;
-        stage.style.height = Math.round(HUB + 96) + 'px';   // room under the words for the ball
-      } else {
-        stage.style.height = '';
-        var H = stage.clientHeight;
-        TOP = 78;
-        S = Math.round(Math.max(170, Math.min(W * 0.19, H * 0.33, 310)));
-        R = Math.round(Math.max(S * 1.5, Math.min(W * 0.4, H - TOP - S / 2 - 6)));
-        HUB = TOP + S / 2 + R;
-      }
-      STEP = Math.min(0.6 * S / R, 0.42);       // radians from one record to the next
-      ARC = R * STEP;                           // pixels a finger moves per record
-      var rr = R + S * 0.6 + 8;
+      var W = stage.clientWidth, vh = window.innerHeight, narrow = W <= 820, TOP = narrow ? 54 : 72, GAP = narrow ? 14 : 22;
+      if (narrow) { S = Math.round(Math.min(W * 0.46, 230)); RB = Math.round(Math.min(W * 0.47, 250)); }
+      else { S = Math.round(Math.max(170, Math.min(W * 0.18, vh * 0.3, 290))); RB = Math.round(Math.max(250, Math.min(W * 0.25, vh * 0.45, 400))); }
+      R = RB + GAP + S / 2;
+      HUB = Math.round(TOP + S * 0.56 + R);       // the front cover, a little enlarged, tops out at TOP
+      STEP = Math.min(0.62 * S / R, 0.44);        // radians from one record to the next
+      ARC = R * STEP;                             // pixels a finger moves per record
+      MAXA = narrow ? 1.95 : 1.78;
+      stage.style.height = Math.round(HUB + (narrow ? 98 : RB * 0.3)) + 'px';
       stage.style.setProperty('--s', S + 'px');
-      stage.style.setProperty('--top', TOP + 'px');
+      stage.style.setProperty('--rb', RB + 'px');
       stage.style.setProperty('--hub', HUB + 'px');
-      stage.style.setProperty('--rr', rr + 'px');
-      stage.style.setProperty('--b', Math.round(narrow ? 118 : Math.max(96, Math.min(R * 0.36, 210))) + 'px');
-      stage.style.setProperty('--stepd', (STEP * 180 / Math.PI) + 'deg');
+      stage.style.setProperty('--stepd', (STEP * 180 / Math.PI).toFixed(3) + 'deg');
       draw();
     }
 
     /* the wheel is endless, like a jog wheel: after the oldest record comes
        the newest again. pos runs on freely; distances wrap round N */
-    var pos = 0, vel = 0, target = null, front = -1, raf = 0, last = 0;
+    var pos = 0, target = null, tau = 0.4, front = -1, raf = 0, last = 0;
     var mod = function (i) { return ((i % N) + N) % N; };
     var wrap = function (d) { d = mod(d); return d > N / 2 ? d - N : d; };
-    var ticks = $$('.rim-t', rim), ring = $('.rim-ring', rim), tickOn = ticks.map(function () { return false; });
 
     function draw() {
       for (var i = 0; i < N; i++) {
         var d = wrap(i - pos), th = d * STEP, a = Math.abs(th), el = els[i];
-        if (a > 1.72) { if (shown[i]) { el.style.visibility = ''; shown[i] = false; } continue; }
-        if (!shown[i]) { el.style.visibility = 'visible'; shown[i] = true; }
-        if (!imgs[i].src) imgs[i].src = D.catalog[i].art;
-        var ad = Math.abs(d), sink = Math.min(1, a / 1.6);
-        var sc = (1 - 0.44 * sink) * (1 + 0.08 * Math.max(0, 1 - ad));
+        if (a > MAXA) { if (shown[i]) { el.style.visibility = ''; shown[i] = false; } continue; }
+        if (!shown[i]) { el.style.visibility = 'visible'; shown[i] = true; if (!imgs[i].src) imgs[i].src = D.catalog[i].art; }
+        var ad = Math.abs(d);
+        var sc = 0.62 + 0.2 * (1 - Math.min(1, a / 1.6)) + 0.3 * Math.max(0, 1 - ad);
         el.style.transform = 'translate(' + (R * Math.sin(th)).toFixed(1) + 'px,' + (-R * Math.cos(th)).toFixed(1) + 'px) rotate(' + (th * 57.2958).toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
         el.style.zIndex = 200 - Math.round(ad * 4);
-        el.style.setProperty('--dim', Math.min(0.78, ad * 0.2).toFixed(3));
-        el.style.setProperty('--bl', (Math.round(Math.max(0, ad - 0.55) * 3) / 2) + 'px');
+        shades[i].style.opacity = Math.min(0.8, ad * 0.17 + Math.max(0, a - 1.25) * 0.9).toFixed(3);
       }
-      // the rim: a tick per record, the year where each year starts
-      var rr = R + S * 0.6 + 8;
-      for (var t = 0; t < N; t++) {
-        var tt = wrap(t - pos) * STEP, on = Math.abs(tt) < 1.62;
-        if (on !== tickOn[t]) { ticks[t].style.visibility = on ? 'visible' : ''; tickOn[t] = on; }
-        if (on) ticks[t].style.transform = 'rotate(' + (tt * 57.2958).toFixed(2) + 'deg) translateY(' + (-rr - (ticks[t].classList.contains('y') ? 19 : 12)) + 'px)';
-      }
-      var deg = -pos * STEP * 57.2958;
-      ring.style.transform = 'rotate(' + deg.toFixed(2) + 'deg)';
-      swirl.style.transform = 'rotate(' + (deg * 1.6).toFixed(2) + 'deg)';
+      ticksEl.style.transform = 'rotate(' + (-pos * STEP * 57.2958).toFixed(2) + 'deg)';
       var f = mod(Math.round(pos));
       if (f !== front) showFront(f);
     }
 
-    var when = $('#dream-when'), title = $('#dream-title'), who = $('#dream-who'), link = $('#dream-link'), play = $('#dream-play');
-    var back = $('.dream-turn.back', stage), fwd = $('.dream-turn.fwd', stage);
+    var when = $('#vision-when'), title = $('#vision-title'), who = $('#vision-who'), link = $('#vision-link'), play = $('#vision-play');
     function showFront(f) {
       if (els[front]) els[front].classList.remove('front');
       front = f;
       els[f].classList.add('front');
-      var c = D.catalog[f];
+      var c = D.catalog[f], cc = COL[c.art] || ['#fcc000', '#7a3cff'];
+      stage.style.setProperty('--c1', cc[0]);
+      stage.style.setProperty('--c2', cc[1]);
       when.textContent = [year(c), c.kind !== 'Single' ? c.kind : ''].filter(Boolean).join(' · ');
       title.textContent = c.title;
       var others = c.artists.split(/\s*,\s*|\s+&\s+/).filter(function (n) { return n && n !== 'NGHTMRE'; }).join(', ');
@@ -395,46 +402,67 @@
       dreamSync();
     }
 
-    dreamSync = function () {
-      var on = cur && !audio.paused && cur.key === catItems[front].key;
-      play.classList.toggle('dream-playing', !!on);
-      $('.dp-t', play).textContent = on ? 'Stop' : 'Preview';
-      play.setAttribute('aria-label', (on ? 'Stop the preview of ' : 'Play a preview of ') + D.catalog[front].title);
-    };
+    /* while a record from the wheel plays, the ball beats: with the track's
+       own loudness where it was measured (D.env), else a steady pulse */
+    var beatRaf = 0;
+    function beat() {
+      beatRaf = 0;
+      var on = cur && !audio.paused && cur.cat != null, v = 0;
+      if (on && !still) {
+        var e = ENV[cur.trackId];
+        if (e) {
+          var x = audio.currentTime * 20, i0 = Math.floor(x), fr = x - i0;
+          v = ((parseInt(e.charAt(i0), 36) || 0) * (1 - fr) + (parseInt(e.charAt(i0 + 1), 36) || 0) * fr) / 35;
+        } else v = 0.5 + 0.5 * Math.sin(performance.now() / 230);
+      }
+      halo.style.opacity = (0.6 + v * 0.4).toFixed(3);
+      halo.style.transform = 'scale(' + (1 + v * 0.09).toFixed(4) + ')';
+      if (on) beatRaf = requestAnimationFrame(beat);
+    }
 
-    /* motion: a spring pulls the wheel onto a record; a flick carries on
-       with the speed it was given and comes to rest on the nearest one */
+    dreamSync = function () {
+      var on = cur && !audio.paused, here = on && cur.key === catItems[front].key;
+      play.classList.toggle('is-sounding', !!here);
+      $('.dp-t', play).textContent = here ? 'Stop' : 'Preview';
+      play.setAttribute('aria-label', (here ? 'Stop the preview of ' : 'Play a preview of ') + D.catalog[front].title);
+      root.classList.toggle('sounding', !!(on && cur.cat != null));
+      if (!beatRaf) beatRaf = requestAnimationFrame(beat);
+    };
+    function progress() {
+      var p = cur && cur.cat != null && audio.duration ? audio.currentTime / audio.duration : 0;
+      prog.style.strokeDasharray = (p * 50).toFixed(2) + ' 100';     // the rim fills over the top, horizon to horizon
+    }
+    audio.addEventListener('timeupdate', progress);
+    audio.addEventListener('ended', function () { prog.style.strokeDasharray = '0 100'; });
+
+    /* motion: wherever the wheel is sent it eases there. A flick is sent as far
+       as its speed would carry it, to the nearest record, so it spins on and
+       comes to rest by itself: no notches */
     function run() { if (!raf) { last = 0; raf = requestAnimationFrame(tick); } }
     function tick(now) {
       raf = 0;
       var dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
       last = now;
       if (target != null) {
-        if (still) { pos = target; vel = 0; }
-        else {
-          var k = 70, c = 2 * Math.sqrt(k) * 0.95;
-          vel += (k * (target - pos) - c * vel) * dt;
-          pos += vel * dt;
-        }
-        if (Math.abs(target - pos) < 0.0015 && Math.abs(vel) < 0.02) { pos = target; vel = 0; target = null; }
+        if (still) pos = target; else pos += (target - pos) * (1 - Math.exp(-dt / tau));
+        if (Math.abs(target - pos) < 0.0015) { pos = target; target = null; }
       }
       draw();
       if (target != null) raf = requestAnimationFrame(tick);
     }
+    function turned() { root.classList.add('turned'); }
     // turn to record i, the short way round
-    function go(i) { var base = target != null ? target : Math.round(pos); target = base + wrap(i - base); run(); turned(); }
-    function step(n) { target = (target != null ? target : Math.round(pos)) + n; run(); turned(); }
+    function go(i) { var base = target != null ? target : Math.round(pos); target = base + wrap(i - base); tau = 0.2; run(); turned(); }
+    function step(n) { target = (target != null ? target : Math.round(pos)) + n; tau = 0.17; run(); turned(); }
     dreamNext = function (i) {
       step(1);
       start(catItems[mod(i + 1)], 'wheel');
     };
 
-    function turned() { root.classList.add('turned'); }
-
     // dragging and swiping (up and down stays the page's)
     var down = null, dragging = false, moved = false, samples = [];
     stage.addEventListener('pointerdown', function (e) {
-      if (e.button || e.target.closest('.dream-now a, .dream-now button, .dream-turn')) return;
+      if (e.button || e.target.closest('.vision a, .vision button, .orb-turn')) return;
       down = { x: e.clientX, y: e.clientY, pos: pos, id: e.pointerId };
       dragging = false; moved = false; samples = [];
     });
@@ -445,14 +473,14 @@
         if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { down = null; return; }
         if (Math.abs(dx) < 6) return;
         dragging = moved = true;
-        target = null; vel = 0;
+        target = null;
+        down.x = e.clientX; down.pos = pos; dx = 0;          // no jump as the drag takes hold
         try { stage.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
         stage.classList.add('grabbing');
         turned();
       }
-      var p = down.pos - dx / ARC;
-      pos = p;
-      samples.push({ t: e.timeStamp, p: p });
+      pos = down.pos - dx / ARC;
+      samples.push({ t: e.timeStamp, p: pos });
       while (samples.length > 2 && e.timeStamp - samples[0].t > 90) samples.shift();
       draw();
     });
@@ -467,26 +495,26 @@
         var a = samples[0], b = samples[samples.length - 1];
         if (b.t > a.t) v = (b.p - a.p) / ((b.t - a.t) / 1000);
       }
-      v = Math.max(-40, Math.min(40, v));
-      vel = v;
-      target = Math.round(pos + v * 0.32);
+      v = Math.max(-45, Math.min(45, v));
+      tau = 0.4;
+      target = Math.round(pos + v * tau);
       run();
     }
     stage.addEventListener('pointerup', release);
     stage.addEventListener('pointercancel', release);
 
-    // a sideways trackpad swipe turns it; settles once the fingers stop
+    // a sideways trackpad swipe turns it; it settles once the fingers stop
     var settle = 0;
     stage.addEventListener('wheel', function (e) {
       var dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
       if (!dx || Math.abs(dx) < Math.abs(e.shiftKey ? 0 : e.deltaY)) return;
       e.preventDefault();
-      target = null; vel = 0;
+      target = null;
       pos += dx * (e.deltaMode === 1 ? 16 : 1) / ARC;
       draw();
       turned();
       clearTimeout(settle);
-      settle = setTimeout(function () { target = Math.round(pos); run(); }, 110);
+      settle = setTimeout(function () { target = Math.round(pos); tau = 0.16; run(); }, 110);
     }, { passive: false });
 
     stage.addEventListener('keydown', function (e) {
@@ -501,16 +529,16 @@
     });
 
     // a tap on a cover: the front one plays, any other comes to the front
-    wheel.addEventListener('click', function (e) {
-      var b = e.target.closest('.dr-b');
+    fan.addEventListener('click', function (e) {
+      var b = e.target.closest('.rec-b');
       if (!b || moved) { moved = false; return; }
       var i = +b.dataset.i;
       if (i === front && target == null) start(catItems[i], 'wheel'); else go(i);
     });
     play.addEventListener('click', function () { start(catItems[front], 'wheel'); });
-    back.addEventListener('click', function () { step(-1); });
-    fwd.addEventListener('click', function () { step(1); });
-    $('#dream-years').addEventListener('click', function (e) {
+    $('.orb-turn.back', stage).addEventListener('click', function () { step(-1); });
+    $('.orb-turn.fwd', stage).addEventListener('click', function () { step(1); });
+    $('#orbit-years').addEventListener('click', function (e) {
       var b = e.target.closest('button');
       if (b) go(+b.dataset.i);
     });
@@ -521,12 +549,12 @@
 
     // on arrival the wheel turns into place by itself, so it reads as a wheel
     if ('IntersectionObserver' in window && !still) {
-      pos = -3.6; draw();
+      pos = -3.4; draw();
       var seen = new IntersectionObserver(function (es) {
         if (!es[0].isIntersecting) return;
         seen.disconnect();
-        if (!root.classList.contains('turned')) { target = 0; run(); }
-      }, { threshold: 0.35 });
+        if (!root.classList.contains('turned')) { target = 0; tau = 0.5; run(); }
+      }, { threshold: 0.3 });
       seen.observe(stage);
     }
   })();
@@ -805,7 +833,7 @@
 
     // how far the tour sheet has slid over the landing
     var t = tour.getBoundingClientRect().top, hp = Math.min(1, Math.max(0, 1 - t / vh));
-    heroImg.style.setProperty('--hp', hp.toFixed(3));
+    hero.style.setProperty('--hp', hp.toFixed(3));
     document.body.classList.toggle('past-hero', hp > 0.92);
 
     // tickets follow you down the page once the dates are behind you
