@@ -1,7 +1,9 @@
 # NGHTMRE: artist site (preview)
 
 A restyle of [nghtmre.com](https://nghtmre.com/) that keeps its order (the tour
-first, then music, video, shop and follow) and its yellow on black, and adds:
+first, then music, video, shop and follow), its yellow on black and **its own
+type** (DusterTM for the wide titles, Bootzy for links, buttons and "Follow
+NGHTMRE", Alte Haas Grotesk for the text), and adds:
 
 - **torn paper and thick paint**, after [dieantwoord.com](https://www.dieantwoord.com/):
   the landing is split by a ripped edge into the portrait and a slab of yellow
@@ -9,7 +11,7 @@ first, then music, video, shop and follow) and its yellow on black, and adds:
   sheets torn on all four sides;
 - **big type, bracket labels and a sheet that slides over the picture**, after
   [indigo-laboratory.it](https://indigo-laboratory.it/): the tour dates are a
-  paper sheet that rides up over the landing, headings are eaten-away print,
+  paper sheet that rides up over the landing,
   lists highlight with a solid box;
 - **a dial and hairline panels**, after [theearthcries.com](https://www.theearthcries.com/):
   the bar at the bottom centre is the player, and opens a dial that turns to
@@ -28,11 +30,25 @@ to `main`). The page asks search engines not to list it.
    nghtmre.com uses) so it stays right by itself; a copy saved at build time
    shows first and stays if Seated cannot be reached. Past dates drop off. Then
    the stage, fog and crowd from nghtmre.com.
-3. **Music**: MINDFULL (Deluxe) with all 17 tracks, then 57 records back to
-   2015. A tap plays Apple's 30-second preview in the page; the arrow opens the
-   record in full.
-4. **Video**: 17 films, played in the page.
-5. **Shop**: eight items from nghtmreshop.com, each linking to its page there.
+3. **Music**: first every record (57, back to 2015) on **the dream wheel**:
+   the covers ride a half circle round his crystal-ball mark like the platter
+   of a CDJ, endless both ways. Drag or swipe sideways (with momentum), use a
+   trackpad, the arrows, the arrow keys or the years under it. The front record
+   is sharp and lit and the rest blur and sink into fog; a hypnotic spiral turns
+   with the wheel and spins while a preview plays; the rim carries the years in
+   the heat-map colours of the Mindfull artwork. Tap the front cover (or
+   Preview) for Apple's 30-second preview; when it ends the wheel turns on to
+   the next record. Then MINDFULL (Deluxe) with all 17 tracks. `?records=grid`
+   shows the old grid of sleeves instead of the wheel.
+4. **Video**: 17 films, then 26 clips from the shows (his YouTube Shorts), all
+   played in the page. YouTube does the hosting.
+5. **Shop**: eight items from nghtmreshop.com, NGHTMRE's Shopify store, with
+   the live price, sizes and stock read from the store's public product feed
+   (`/products.json`). Pick a size and Add to bag; the bag is kept in the
+   browser, and Check out opens the store's own checkout with those items in it
+   (Shopify's cart link, `/cart/<variant>:<qty>,...`), so the order, payment
+   and shipping all happen on nghtmreshop.com. If the feed cannot be reached the
+   cards are plain links to the products, as before.
 6. **Connect**: the same links as nghtmre.com's footer, plus Laylo alerts.
 
 ## Files
@@ -47,11 +63,12 @@ Plain HTML, CSS and JavaScript. No framework, no build step for the page.
 | `js/data.js` | Generated from `data/` (do not edit by hand) |
 | `data/catalog.json`, `data/album.json` | The records and the album's tracks (generated) |
 | `data/videos.json` | The films: YouTube id, title, who with |
+| `data/clips.json` | The clips (Shorts): YouTube id, title |
 | `data/merch.json` | The eight shop items |
 | `data/tour.json` | The saved copy of the tour dates |
 | `art/`, `img/` | Cover art, photos, video stills, merch |
 | `tex/` | Torn edges, paint, paper, grunge, grain (all drawn by `tools/build.py`) |
-| `fonts/` | Archivo and DM Mono (both SIL Open Font License) |
+| `fonts/` | Archivo (the fallback) and DM Mono for the small labels (both SIL Open Font License). His own fonts load from nghtmre.com, where they are licensed; they are not copied here |
 | `tools/catalog.py` | Rebuilds the records and their art from Apple's catalogue |
 | `tools/build.py` | Rebuilds `js/data.js`; with flags, the textures and pictures |
 
@@ -69,6 +86,9 @@ Plain HTML, CSS and JavaScript. No framework, no build step for the page.
 
 **A new film:** add a row to `data/videos.json`, save its still as
 `img/v-<id>.jpg` (16:9, about 960 wide), then `python3 tools/build.py`.
+
+**A new clip:** add a row to `data/clips.json`, save its still as
+`img/s-<id>.webp` (9:16, 360 wide), then `python3 tools/build.py`.
 
 **Shop items:** edit `data/merch.json` (the `handle` is the end of the product's
 address) and replace `img/m-<n>.webp` in the same order.
@@ -88,7 +108,12 @@ rip.
   otherwise an album.link page that offers every service.
 - Films: the list on nghtmre.com's home and video pages (one dead link left
   out); stills from YouTube.
-- Merch: nghtmreshop.com. No prices are shown, so none can go stale.
+- Merch: nghtmreshop.com. Prices, sizes and stock come live from its product
+  feed each time the page opens, so they cannot go stale.
+- Clips: his YouTube Shorts (the live moments, not the release ads).
+- Fonts: nghtmre.com's theme (`/cdn/shop/t/16/assets/`). If that theme is ever
+  replaced the address changes and the page falls back to Archivo: update the
+  four `@font-face` lines at the top of `css/styles.css`.
 - "Gud Vibrations" on the album: its copyright line.
 
 ## Preview locally
