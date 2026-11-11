@@ -281,7 +281,7 @@ ul, ol { list-style: none; }
 .dream-sky::after { background-image: var(--stars-b); animation-duration: 7.3s; animation-delay: -3s; }
 @keyframes twinkle { from { opacity: .25; } to { opacity: 1; } }
 
-.dream-swirl { position: absolute; left: 50%; top: var(--hub); z-index: 1; width: calc(var(--rr) * 2.5); height: calc(var(--rr) * 2.5); margin: calc(var(--rr) * -1.25) 0 0 calc(var(--rr) * -1.25); color: var(--y); opacity: .13; pointer-events: none; -webkit-mask: radial-gradient(closest-side, #000 30%, rgba(0, 0, 0, .5) 62%, transparent 100%); mask: radial-gradient(closest-side, #000 30%, rgba(0, 0, 0, .5) 62%, transparent 100%); will-change: transform; }
+.dream-swirl { position: absolute; left: 50%; top: var(--hub); z-index: 1; width: calc(var(--rr) * 2); height: calc(var(--rr) * 2); margin: calc(var(--rr) * -1) 0 0 calc(var(--rr) * -1); color: var(--y); opacity: .15; pointer-events: none; -webkit-mask: radial-gradient(closest-side, #000 30%, rgba(0, 0, 0, .5) 62%, transparent 100%); mask: radial-gradient(closest-side, #000 30%, rgba(0, 0, 0, .5) 62%, transparent 100%); will-change: transform; }
 .sw-idle { animation: spin 140s linear infinite; }
 .sw-play { animation: spin 7s linear infinite; animation-play-state: paused; }
 .playing .sw-play { animation-play-state: running; }
