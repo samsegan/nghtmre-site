@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>NGHTMRE</title>
+<meta name="description" content="NGHTMRE. Mindfull Tour dates and tickets, music, videos and merch.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NGHTMRE: Mindfull Tour">
+<meta property="og:description" content="Tour dates and tickets, music, videos and merch.">
+<meta property="og:image" content="https://samsegan.github.io/nghtmre-site/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fcc000'/%3E%3Cpath d='M8 23V9h3.400l6.200 8.200V9H21v14h-3.300l-6.300-8.300V23z' fill='%230a0a0a'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="img/hero.webp" media="(min-width: 821px)">
+<link rel="preload" as="image" href="img/hero-m.webp" media="(max-width: 820px)">
+<link rel="stylesheet" href="css/styles.css">
+<script>document.documentElement.className = 'js';</script>
+</head>
+<body>
+
+<a class="skip" href="#tour">Skip to the tour dates</a>
+
+<!-- film grain over everything -->
+<div id="grain" aria-hidden="true"></div>
+
+<!-- the four corners, as on nghtmre.com; they invert against whatever is behind them -->
+<nav id="nav" aria-label="Sections">
+  <a class="corner tl" href="#tour" data-sec="tour">Tour</a>
+  <a class="corner tr" href="#shop" data-sec="shop">Shop</a>
+  <a class="corner bl" href="#music" data-sec="music">Music</a>
+  <a class="corner br" href="#video" data-sec="video">Video</a>
+  <a class="nav-logo" href="#top" aria-label="NGHTMRE: back to the top"></a>
+</nav>
+
+<!-- bottom centre: the player and the dial -->
+<div id="dock">
+  <button class="dock-play" type="button" aria-label="Play a preview"><i aria-hidden="true"></i></button>
+  <button class="dock-label" type="button" aria-expanded="false" aria-controls="dial">
+    <span class="dock-text">Menu</span>
+  </button>
+  <button class="dock-more" type="button" aria-label="Open the menu" aria-expanded="false" aria-controls="dial"><i aria-hidden="true"></i></button>
+  <span class="dock-bar" aria-hidden="true"></span>
+</div>
+
+<div id="dial" role="dialog" aria-label="Menu" hidden>
+  <div class="dial-head">
+    <span class="dial-sq" aria-hidden="true"></span>
+    <span class="dial-title">NGHTMRE</span>
+    <button class="dial-x" type="button" aria-label="Close the menu">&times;</button>
+  </div>
+  <div class="dial-face">
+    <div class="dial-wheel">
+      <a href="#tour" data-sec="tour"><b>1.</b> Tour</a>
+      <a href="#music" data-sec="music"><b>2.</b> Music</a>
+      <a href="#video" data-sec="video"><b>3.</b> Video</a>
+      <a href="#shop" data-sec="shop"><b>4.</b> Shop</a>
+      <a href="#connect" data-sec="connect"><b>5.</b> Connect</a>
+      <a href="#top" data-sec="top">Top</a>
+    </div>
+    <span class="dial-ring" aria-hidden="true"></span>
+    <span class="dial-dot" aria-hidden="true"></span>
+    <button class="dial-play" type="button" aria-label="Play a preview"><i aria-hidden="true"></i></button>
+  </div>
+  <p class="dial-now"><span class="dial-now-k">Now</span> <span class="dial-now-v">Nothing playing</span></p>
+  <div class="dial-foot">
+    <a href="#tour">Tickets</a>
+    <span class="dial-mark" aria-hidden="true"></span>
+    <a href="https://laylo.com/nghtmre" target="_blank" rel="noopener">Follow</a>
+  </div>
+</div>
+
+<main>
+
+<div class="stack">
+
+  <!-- ============ LANDING ============ -->
+  <section id="top" class="hero" data-sec="top">
+    <div class="hero-photo">
+      <picture>
+        <source media="(max-width: 820px)" srcset="img/hero-m.webp">
+        <img src="img/hero.webp" alt="NGHTMRE: a portrait cut into stacked slices, with a melting smiley in the middle" width="1800" height="1800" fetchpriority="high">
+      </picture>
+      <span class="hero-logo" role="img" aria-label="NGHTMRE"></span>
+      <p class="hero-side" aria-hidden="true">Mindfull<br>Deluxe<br>out now</p>
+    </div>
+
+    <div class="hero-paint">
+      <span class="vtear" aria-hidden="true"></span>
+      <div class="hero-copy">
+        <p class="label">[ Now touring ]</p>
+        <h1 class="erode"><span class="sr">NGHTMRE: </span><span>Mind</span><span>full</span><span>Tour</span></h1>
+        <p class="spaced" id="hero-span">2026 &mdash; 2027</p>
+        <a class="next" id="hero-next" href="#tour">
+          <span class="next-k">Next show</span>
+          <span class="next-v">See every date</span>
+        </a>
+        <div class="hero-btns">
+          <a class="btn solid" href="#tour">Get tickets</a>
+          <a class="btn" href="https://laylo.com/nghtmre/A9tr65" target="_blank" rel="noopener">Tour alerts <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOUR ============ -->
+  <section id="tour" class="tour" data-sec="tour">
+    <span class="tear top a paper" aria-hidden="true"></span>
+
+    <header class="sec-head">
+      <p class="label" id="tour-count">[ Dates ]</p>
+      <h2 class="mega erode">Tour</h2>
+      <p class="label r" id="tour-span">[ 2026 &mdash; 27 ]</p>
+    </header>
+
+    <ol class="shows" id="shows">
+      <li class="shows-wait">
+        <a href="https://nghtmre.com/pages/tour">The dates are on nghtmre.com <span aria-hidden="true">&nearr;</span></a>
+      </li>
+    </ol>
+
+    <div class="tour-foot">
+      <p>Get told when new shows are announced near you.</p>
+      <a class="btn solid" href="https://laylo.com/nghtmre" target="_blank" rel="noopener">Follow NGHTMRE <span aria-hidden="true">&nearr;</span></a>
+      <p class="fine">Dates and tickets come live from Seated.</p>
+    </div>
+
+    <!-- the stage, the fog and the crowd from nghtmre.com -->
+    <div class="scene" id="scene">
+      <span class="tear bottom b paper" aria-hidden="true"></span>
+      <img class="scene-stage" src="img/stage.webp" alt="" width="1600" height="1066" loading="lazy">
+      <img class="scene-fog" src="img/fog.webp" alt="" width="1400" height="738" loading="lazy">
+      <div class="scene-copy">
+        <img class="scene-title" src="img/tour-title.webp" alt="NGHTMRE Mindfull Tour" width="1300" height="459" loading="lazy">
+        <a class="btn y" href="#tour">Get tickets</a>
+      </div>
+      <img class="scene-crowd" src="img/crowd.webp" alt="" width="1800" height="1200" loading="lazy">
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ MUSIC ============ -->
+<section id="music" class="music" data-sec="music">
+  <header class="sec-head">
+    <p class="label" id="music-count">[ Records ]</p>
+    <h2 class="mega erode">Music</h2>
+    <p class="label r">[ 2015 &mdash; 2026 ]</p>
+  </header>
+
+  <div class="album" id="album">
+    <div class="album-art">
+      <div class="torn sq">
+        <img id="album-img" src="art/mindfull-deluxe-version.webp" alt="MINDFULL (Deluxe Version) cover" width="520" height="520">
+      </div>
+      <span class="tape t1" aria-hidden="true"></span>
+      <span class="tape t2" aria-hidden="true"></span>
+    </div>
+    <div class="album-body">
+      <p class="label">[ The album ]</p>
+      <h3 class="album-title">Mindfull <em>Deluxe</em></h3>
+      <ul class="specs" id="album-specs">
+        <li><span>17 tracks</span></li>
+        <li><span>Out now</span></li>
+        <li><span>Gud Vibrations</span></li>
+      </ul>
+      <ol class="tracks" id="tracks"></ol>
+      <div class="album-foot">
+        <a class="btn y solid" id="album-link" href="https://album.link/i/1887643726" target="_blank" rel="noopener">Listen in full <span aria-hidden="true">&nearr;</span></a>
+        <p class="fine">Tap a track for a 30-second preview.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cat-head">
+    <p class="label">[ Every record ]</p>
+    <p class="label r">Tap a sleeve to hear it</p>
+  </div>
+  <ul class="cat" id="cat"></ul>
+  <div class="cat-more">
+    <button class="btn y" type="button" id="cat-all">View all</button>
+  </div>
+</section>
+
+<!-- torn strip of the newest records -->
+<div class="strip" aria-hidden="true"><div class="strip-in"><div class="strip-run" id="strip-run"></div></div></div>
+
+<!-- ============ VIDEO ============ -->
+<section id="video" class="video" data-sec="video">
+  <span class="tear top c paint" aria-hidden="true"></span>
+
+  <header class="sec-head">
+    <p class="label" id="video-count">[ Films ]</p>
+    <h2 class="mega erode">Video</h2>
+    <p class="label r">[ Watch ]</p>
+  </header>
+
+  <div class="vid">
+    <div class="vid-stage">
+      <div class="torn wide" id="vid-frame"></div>
+      <p class="vid-meta" id="vid-meta"></p>
+    </div>
+    <ol class="vid-list" id="vid-list"></ol>
+  </div>
+  <div class="vid-more">
+    <a class="btn solid" href="https://www.youtube.com/@NGHTMRE" target="_blank" rel="noopener">More on YouTube <span aria-hidden="true">&nearr;</span></a>
+  </div>
+</section>
+
+<!-- ============ SHOP ============ -->
+<section id="shop" class="shop" data-sec="shop">
+  <span class="tear top a ink" aria-hidden="true"></span>
+
+  <header class="sec-head">
+    <p class="label">[ Merch ]</p>
+    <h2 class="mega erode">Shop</h2>
+    <p class="label r">[ nghtmreshop.com ]</p>
+  </header>
+
+  <ul class="merch" id="merch"></ul>
+  <div class="shop-more">
+    <a class="btn y solid" href="https://nghtmreshop.com" target="_blank" rel="noopener">Visit the shop <span aria-hidden="true">&nearr;</span></a>
+  </div>
+</section>
+
+<!-- ============ CONNECT ============ -->
+<section id="connect" class="connect" data-sec="connect">
+  <span class="tear top b foil" aria-hidden="true"></span>
+  <picture class="connect-bg">
+    <source media="(max-width: 820px)" srcset="img/foil-m.webp">
+    <img src="img/foil.webp" alt="NGHTMRE in a green hooded jacket and a visor, in front of crumpled silver foil" width="2000" height="1604" loading="lazy">
+  </picture>
+
+  <div class="connect-in">
+    <p class="label">[ Connect ]</p>
+    <h2 class="connect-title erode">Follow<br>NGHTMRE</h2>
+    <ul class="socials">
+      <li><a href="https://open.spotify.com/artist/76M2Ekj8bG8W7X2nbx2CpF" target="_blank" rel="noopener"><span>Spotify</span></a></li>
+      <li><a href="https://music.apple.com/us/artist/nghtmre/910641213" target="_blank" rel="noopener"><span>Apple Music</span></a></li>
+      <li><a href="https://soundcloud.com/nghtmre" target="_blank" rel="noopener"><span>SoundCloud</span></a></li>
+      <li><a href="https://www.youtube.com/@NGHTMRE" target="_blank" rel="noopener"><span>YouTube</span></a></li>
+      <li><a href="https://www.instagram.com/nghtmre" target="_blank" rel="noopener"><span>Instagram</span></a></li>
+      <li><a href="https://twitter.com/NGHTMRE" target="_blank" rel="noopener"><span>X</span></a></li>
+      <li><a href="https://www.facebook.com/nghtmre/" target="_blank" rel="noopener"><span>Facebook</span></a></li>
+    </ul>
+    <a class="btn y solid" href="https://laylo.com/nghtmre" target="_blank" rel="noopener">Tour and drop alerts <span aria-hidden="true">&nearr;</span></a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <span class="foot-mark" aria-hidden="true"></span>
+  <p>&copy; <span id="year">2026</span> NGHTMRE</p>
+  <p class="foot-links">
+    <a href="https://nghtmre.com/pages/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+    <a href="https://nghtmre.com/pages/terms-of-service" target="_blank" rel="noopener">Terms</a>
+    <a href="https://nghtmre.com/" target="_blank" rel="noopener">nghtmre.com</a>
+  </p>
+  <p class="fine">Preview build, not the official site yet. Music previews by Apple Music.</p>
+</footer>
+
+<noscript><p class="noscript">This page fills in its dates, records and videos with JavaScript. Everything is also on <a href="https://nghtmre.com/">nghtmre.com</a>.</p></noscript>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

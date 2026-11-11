@@ -1,0 +1,200 @@
+[
+ {
+  "id": "3208f72b-ef7c-42c5-ae37-8e7ac4392f8a",
+  "start": "2026-11-28",
+  "end": "2026-11-29",
+  "venue": "VAC Festival",
+  "place": "Zhuhai, Guangdong Province",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "749aa237-7900-41da-93b3-7dad718035ac",
+  "start": "2026-12-04",
+  "end": "2026-12-04",
+  "venue": "The Rave",
+  "place": "Milwaukee, WI",
+  "note": "with Excision",
+  "soldOut": false
+ },
+ {
+  "id": "ac00d79b-e452-404b-a3cf-4aa54dc3e222",
+  "start": "2026-12-05",
+  "end": "2026-12-05",
+  "venue": "Big Night Live",
+  "place": "Boston, MA",
+  "note": "NGHTMRE Before Christmas Tour",
+  "soldOut": false
+ },
+ {
+  "id": "f8b24396-a987-44b7-bff7-e1de893aeaaa",
+  "start": "2026-12-11",
+  "end": "2026-12-11",
+  "venue": "The Republik",
+  "place": "Honolulu, HI",
+  "note": "NGHTMRE Before Christmas Tour",
+  "soldOut": false
+ },
+ {
+  "id": "bf097caa-1520-4ad0-b7dc-c1daf0c0dc63",
+  "start": "2026-12-12",
+  "end": "2026-12-12",
+  "venue": "WAMU Theater",
+  "place": "Seattle, WA",
+  "note": "Two Friends, Sippy",
+  "soldOut": false
+ },
+ {
+  "id": "d13c7f77-4640-42d4-a043-1539864e3a31",
+  "start": "2026-12-18",
+  "end": "2026-12-18",
+  "venue": "Ductwork",
+  "place": "Houston, TX",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "3eec727c-c3a0-43d1-bdb8-4280c99e9f4d",
+  "start": "2026-12-19",
+  "end": "2026-12-19",
+  "venue": "Believe Music Hall",
+  "place": "Atlanta, GA",
+  "note": "NGHTMRE Before Christmas Tour",
+  "soldOut": false
+ },
+ {
+  "id": "f786c936-fd82-40aa-ad90-339723b6d515",
+  "start": "2026-12-23",
+  "end": "2026-12-23",
+  "venue": "Lincoln Theatre",
+  "place": "Raleigh, NC",
+  "note": "NGHTMRE Before Christmas Tour",
+  "soldOut": false
+ },
+ {
+  "id": "7c0244aa-4887-41f2-bd40-8b2648d35c3d",
+  "start": "2026-12-26",
+  "end": "2026-12-26",
+  "venue": "Blackbox Theater",
+  "place": "Charlotte, NC",
+  "note": "NGHTMRE Before Christmas Tour",
+  "soldOut": false
+ },
+ {
+  "id": "0a5a7e6c-005a-46e8-82ce-fac68669acaa",
+  "start": "2026-12-31",
+  "end": "2026-12-31",
+  "venue": "Orlando Amphitheater at the Central Florida Fair",
+  "place": "Orlando, FL",
+  "note": "Eternal NYE",
+  "soldOut": false
+ },
+ {
+  "id": "3eb4ba02-bbc4-4a34-bb29-0d127b061644",
+  "start": "2027-01-01",
+  "end": "2027-01-01",
+  "venue": "NOS Events Center",
+  "place": "San Bernardino, CA",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "d449a450-037d-4cc9-b79f-c8933ec34307",
+  "start": "2027-01-02",
+  "end": "2027-01-02",
+  "venue": "NOVA SD",
+  "place": "San Diego, CA",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "44aff6f7-5758-4770-80e1-2ad35088a72b",
+  "start": "2027-01-08",
+  "end": "2027-01-08",
+  "venue": "The Palace Theatre",
+  "place": "Calgary, AB",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "37f032d9-7b1a-4c4d-9f9f-b309f5871d9e",
+  "start": "2027-01-09",
+  "end": "2027-01-09",
+  "venue": "Commodore Ballroom",
+  "place": "Vancouver, BC",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "3f27dc51-e802-4871-a272-614d5b7d978f",
+  "start": "2027-01-26",
+  "end": "2027-01-31",
+  "venue": "EDSEA",
+  "place": "Miami, FL",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "47e30440-7729-4985-b9a6-0b4186d05b12",
+  "start": "2027-02-19",
+  "end": "2027-02-21",
+  "venue": "EDC Mexico",
+  "place": "Mexico City, CDMX",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "1a939f0f-0e67-4d74-b6cc-804857066eb0",
+  "start": "2027-03-25",
+  "end": "2027-03-25",
+  "venue": "The Hordern Pavilion",
+  "place": "Sydney, NSW",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "d00d2e60-a438-4bb0-ab78-39c3fb4dbf8e",
+  "start": "2027-03-26",
+  "end": "2027-03-26",
+  "venue": "Ozone Reserve",
+  "place": "Perth, Australia",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "8680686f-c862-42d4-85c9-cccd6524ec9d",
+  "start": "2027-03-27",
+  "end": "2027-03-27",
+  "venue": "Super Ordinary",
+  "place": "Brisbane, Australia",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "a3bf4cb4-d64f-4da0-baf7-9b2625b6978a",
+  "start": "2027-03-28",
+  "end": "2027-03-28",
+  "venue": "Wharepai Domain",
+  "place": "Tauranga, New Zealand",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "7e3560cb-7a1b-4449-a16f-4ab0ed8e5333",
+  "start": "2027-04-23",
+  "end": "2027-04-24",
+  "venue": "Ubbi Dubbi",
+  "place": "Fort Worth, TX",
+  "note": "",
+  "soldOut": false
+ },
+ {
+  "id": "2fab0ff6-7808-4c64-9942-f5c43af147d0",
+  "start": "2027-04-30",
+  "end": "2027-05-02",
+  "venue": "Tomorrowland Brazil",
+  "place": "São Paulo, State of São Paulo",
+  "note": "",
+  "soldOut": false
+ }
+]
