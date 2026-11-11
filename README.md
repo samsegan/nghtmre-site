@@ -24,8 +24,14 @@ to `main`). The page asks search engines not to list it.
 
 ## What is on the page
 
-1. **Landing**: the Mindfull portrait, the tour name, the next show with a
-   countdown, tickets.
+1. **Landing**, kept minimal so it points at tickets: the Mindfull portrait
+   and the paint, with his logo and "Mindfull Tour" in the middle over the
+   seam, then a big Get tickets (its heat-map ring runs round it and it
+   breathes) and Tour alerts. Tap the logo or the tour name and the landing
+   dreams for three seconds: it warps like water, a hypnotic spiral turns over
+   it, echoes of the logo float off in the heat-map colours and the photo
+   drifts through them. Once you are past the dates a small Get tickets stays
+   under TOUR in the top-left corner, and every date's Tickets button is solid.
 2. **Tour**: every upcoming date, read live from Seated (the same feed
    nghtmre.com uses) so it stays right by itself; a copy saved at build time
    shows first and stays if Seated cannot be reached. Past dates drop off. Then

@@ -12,6 +12,13 @@
   };
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
 
+  // a hypnotic spiral: one arm; the dark between its turns is the other
+  function spiral(turns) {
+    var k = 100 / (turns * 2 * Math.PI), pts = [];
+    for (var a = 0; a <= turns * 2 * Math.PI; a += 0.05) pts.push((k * a * Math.cos(a)).toFixed(2) + ',' + (k * a * Math.sin(a)).toFixed(2));
+    return '<polyline points="' + pts.join(' ') + '" fill="none" stroke="currentColor" stroke-width="' + (Math.PI * k).toFixed(2) + '"/>';
+  }
+
   var SEATED = 'https://cdn.seated.com/api/tour/b3f93a40-bbae-46a6-9c9c-24f747b4b48c?include=tour-events';
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   var MONTH = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -64,16 +71,6 @@
     $('#tour-count').textContent = '[ ' + shows.length + (shows.length === 1 ? ' date ]' : ' dates ]');
     var y1 = first.getFullYear(), y2 = last.getFullYear();
     $('#tour-span').innerHTML = '[ ' + MON[first.getMonth()] + ' ' + y1 + ' &mdash; ' + MON[last.getMonth()] + ' ' + y2 + ' ]';
-    $('#hero-span').innerHTML = y1 === y2 ? String(y1) : y1 + ' &mdash; ' + y2;
-
-    // the next show, on the landing
-    var n = shows[0], d0 = day(n.start), left = Math.round((d0 - today) / 864e5);
-    var when = left <= 0 ? 'On now' : left === 1 ? 'Tomorrow' : 'In ' + left + ' days';
-    var next = $('#hero-next');
-    next.href = 'https://link.seated.com/' + n.id;
-    next.target = '_blank'; next.rel = 'noopener';
-    $('.next-k', next).innerHTML = 'Next show &middot; ' + when;
-    $('.next-v', next).innerHTML = range(d0, day(n.end || n.start)) + ' &mdash; ' + esc(n.place.split(',')[0]);
   }
 
   renderTour(D.tour);
@@ -95,6 +92,44 @@
       })
       .catch(function () { /* the list built into the page stays */ });
   }
+
+  /* ------------------------------------------------------------ the dream (tap the logo) */
+
+  (function dreamTap() {
+    var btn = $('#hero-dream'), heroEl = $('.hero'), echo = $('#hero-echo'), sw = $('#hero-swirl');
+    var map = $('#dw-map'), noise = $('#dw-noise');
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var COLS = ['#fcc000', '#ff1f4b', '#c02cff', '#22e4ff'], T = 3200, busy = false;
+    sw.innerHTML = spiral(6);
+    btn.addEventListener('click', function () {
+      if (busy) return;
+      busy = true;
+      // the echoes start exactly over the logo and the tour
+      var h = heroEl.getBoundingClientRect(), r = btn.getBoundingClientRect();
+      echo.style.cssText = 'left:' + (r.left - h.left) + 'px;top:' + (r.top - h.top) + 'px;width:' + r.width + 'px;height:' + r.height + 'px';
+      heroEl.style.setProperty('--dy', (r.top - h.top + r.height / 2) + 'px');
+      echo.innerHTML = COLS.map(function (c, i) {
+        return '<div class="echo" style="--c:' + c + ';--es:' + (1.35 + i * 0.22) + ';--ey:' + (-3 - i * 4) + '%;animation-delay:' + (i * 0.17) + 's">' +
+          '<span class="echo-logo"></span><span class="echo-tour">Mindfull Tour</span></div>';
+      }).join('');
+      heroEl.classList.add('dreaming');
+      var t0 = performance.now(), A = window.innerWidth <= 820 ? 20 : 34;
+      if (!still) heroEl.style.filter = 'url(#dreamwarp)';
+      requestAnimationFrame(function frame(now) {
+        var p = Math.min(1, (now - t0) / T), env = Math.sin(Math.PI * p);
+        if (!still) {
+          map.setAttribute('scale', (A * env).toFixed(1));
+          noise.setAttribute('baseFrequency', (0.004 + 0.002 * Math.sin(p * 8)).toFixed(4) + ' ' + (0.016 + 0.008 * Math.cos(p * 6)).toFixed(4));
+        }
+        if (p < 1) { requestAnimationFrame(frame); return; }
+        heroEl.style.filter = '';
+        map.setAttribute('scale', '0');
+        heroEl.classList.remove('dreaming');
+        echo.innerHTML = '';
+        busy = false;
+      });
+    });
+  })();
 
   /* ------------------------------------------------------------ player */
 
@@ -262,12 +297,7 @@
     }).join('');
     var yearBtns = $$('#dream-years button');
 
-    // the hypnotic spiral: one arm; the dark between its turns is the other
-    (function () {
-      var turns = 4.5, k = 100 / (turns * 2 * Math.PI), pts = [];
-      for (var a = 0; a <= turns * 2 * Math.PI; a += 0.05) pts.push((k * a * Math.cos(a)).toFixed(2) + ',' + (k * a * Math.sin(a)).toFixed(2));
-      arm.innerHTML = '<polyline points="' + pts.join(' ') + '" fill="none" stroke="currentColor" stroke-width="' + (Math.PI * k).toFixed(2) + '"/>';
-    })();
+    arm.innerHTML = spiral(4.5);
 
     // stars: two layers that twinkle out of step (seeded, so they stay put)
     (function () {
@@ -765,6 +795,7 @@
 
   var secs = $$('[data-sec]').filter(function (el) { return el.tagName === 'SECTION'; });
   var hero = $('.hero'), heroImg = $('.hero-photo img'), scene = $('#scene'), tour = $('#tour'), ticking = false;
+  var tixFloat = $('#tix-float'), tixOn = false;
 
   function onScroll() {
     ticking = false;
@@ -776,6 +807,10 @@
     var t = tour.getBoundingClientRect().top, hp = Math.min(1, Math.max(0, 1 - t / vh));
     heroImg.style.setProperty('--hp', hp.toFixed(3));
     document.body.classList.toggle('past-hero', hp > 0.92);
+
+    // tickets follow you down the page once the dates are behind you
+    var tb = tour.getBoundingClientRect().bottom, on = hp > 0.92 && tb < vh * 0.5;
+    if (on !== tixOn) { tixOn = on; document.body.classList.toggle('show-tix', on); tixFloat.setAttribute('aria-hidden', String(!on)); tixFloat.tabIndex = on ? 0 : -1; }
 
     // the crowd rises as the stage comes into view
     var r = scene.getBoundingClientRect();

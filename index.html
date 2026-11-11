@@ -27,6 +27,16 @@
 
 <a class="skip" href="#tour">Skip to the tour dates</a>
 
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <filter id="dreamwarp" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence id="dw-noise" type="fractalNoise" baseFrequency="0.005 0.02" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap id="dw-map" in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<!-- once past the dates, tickets stay one tap away -->
+<a class="tix tix-float" id="tix-float" href="#tour" aria-hidden="true" tabindex="-1"><span>Get tickets</span></a>
+
 <!-- film grain over everything -->
 <div id="grain" aria-hidden="true"></div>
 
@@ -102,24 +112,23 @@
         <source media="(max-width: 820px)" srcset="img/hero-m.webp">
         <img src="img/hero.webp" alt="NGHTMRE: a portrait cut into stacked slices, with a melting smiley in the middle" width="1800" height="1800" fetchpriority="high">
       </picture>
-      <span class="hero-logo" role="img" aria-label="NGHTMRE"></span>
-      <p class="hero-side" aria-hidden="true">Mindfull<br>Deluxe<br>out now</p>
     </div>
+    <div class="hero-paint"><span class="vtear" aria-hidden="true"></span></div>
 
-    <div class="hero-paint">
-      <span class="vtear" aria-hidden="true"></span>
-      <div class="hero-copy">
-        <p class="label">[ Now touring ]</p>
-        <h1><span class="sr">NGHTMRE: </span><span>Mind</span><span>full</span><span>Tour</span></h1>
-        <p class="spaced" id="hero-span">2026 &mdash; 2027</p>
-        <a class="next" id="hero-next" href="#tour">
-          <span class="next-k">Next show</span>
-          <span class="next-v">See every date</span>
-        </a>
-        <div class="hero-btns">
-          <a class="btn solid" href="#tour">Get tickets</a>
-          <a class="btn" href="https://laylo.com/nghtmre/A9tr65" target="_blank" rel="noopener">Tour alerts <span aria-hidden="true">&nearr;</span></a>
-        </div>
+    <!-- the dream: a spiral and echoes of the logo, shown while it plays -->
+    <svg class="hero-swirl" id="hero-swirl" viewBox="-100 -100 200 200" aria-hidden="true"></svg>
+    <div class="hero-echo" id="hero-echo" aria-hidden="true"></div>
+
+    <!-- the middle of the landing: his logo and the tour (tap them to dream), then tickets -->
+    <div class="hero-lock">
+      <h1 class="sr">NGHTMRE: Mindfull Tour</h1>
+      <button class="hero-dream" id="hero-dream" type="button" aria-label="NGHTMRE, Mindfull Tour. Tap to dream.">
+        <span class="hero-logo" aria-hidden="true"><i></i></span>
+        <span class="hero-tour" aria-hidden="true">Mindfull Tour</span>
+      </button>
+      <div class="hero-btns">
+        <a class="tix" href="#tour"><span>Get tickets <i aria-hidden="true">&rarr;</i></span></a>
+        <a class="hero-alerts" href="https://laylo.com/nghtmre/A9tr65" target="_blank" rel="noopener">Tour alerts <span aria-hidden="true">&nearr;</span></a>
       </div>
     </div>
   </section>
